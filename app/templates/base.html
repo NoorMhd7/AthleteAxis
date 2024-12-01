@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AthleteAxis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav style="display: flex; justify-content: space-between; padding: 1rem; color: #1470AF;">
+        <div style="font-weight: bold; font-size: 1.5rem; ">AthleteAxis</div>
+        <div>
+            <a href="/" style="margin: 0 1rem; color: #1470AF; text-decoration: none;">Shop</a>
+            <a href="/about" style="margin: 0 1rem; color: #1470AF; text-decoration: none;">About</a>
+            <a href="/contact" style="margin: 0 1rem; color: #1470AF; text-decoration: none;">Contact</a>
+            <a href="/cart" style="margin: 0 1rem; color: #1470AF; text-decoration: none;">Cart</a>
+            
+            <!-- Conditionally display login or logout based on whether the user is logged in -->
+            {% if current_user.is_authenticated %}
+                <a href="/logout" style="margin: 0 1rem; color: #1470AF; text-decoration: none;">Logout</a>
+            {% else %}
+                <a href="/login" style="margin: 0 1rem; color: #1470AF; text-decoration: none;">Login</a>
+                <a href="/register" style="margin: 0 1rem; color: #1470AF; text-decoration: none;">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <!-- Content of the page -->
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

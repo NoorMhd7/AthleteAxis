@@ -1,0 +1,15 @@
+/* Apply the background color, font color, and font family globally */
+body {
+    background-color: #EAEAEE;  /* Set background color */
+    font-family: 'Marcellus', sans-serif;  /* Set font family */
+}
+
+.navbar a {
+    color: #1470AF;  /* Set link color */
+    text-decoration: none;  /* Remove underline from links */
+}
+
+/* Apply hover effect for navbar links */
+.navbar a:hover {
+    text-decoration: underline;  /* Underline on hover */
+}
