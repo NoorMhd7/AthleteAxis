@@ -1,13 +1,13 @@
 <!-- login.html -->
 {% extends "base.html" %}
 {% block content %}
-    <div class="form-container">
-        <h1>Login</h1>
+<div class="register-container">
+    <div class="register-box">
+        <h1>Welcome Back</h1>
         <form method="POST" action="">
             {{ form.hidden_tag() }}
             <div class="form-group">
-                {{ form.email.label }}
-                {{ form.email(class="form-control") }}
+                {{ form.email(class="form-input", placeholder="Email") }}
                 {% if form.email.errors %}
                     {% for error in form.email.errors %}
                         <span class="error">{{ error }}</span>
@@ -15,15 +15,18 @@
                 {% endif %}
             </div>
             <div class="form-group">
-                {{ form.password.label }}
-                {{ form.password(class="form-control") }}
+                {{ form.password(class="form-input", placeholder="Password") }}
                 {% if form.password.errors %}
                     {% for error in form.password.errors %}
                         <span class="error">{{ error }}</span>
                     {% endfor %}
                 {% endif %}
             </div>
-            {{ form.submit(class="btn btn-primary") }}
+            {{ form.submit(class="submit-btn") }}
         </form>
+        <div class="login-link">
+            Don't have an account? <a href="{{ url_for('main.register') }}">Sign up here</a>
+        </div>
     </div>
+</div>
 {% endblock %}

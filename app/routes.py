@@ -76,3 +76,10 @@ def login():
         else:
             flash('Login unsuccessful. Please check email and password.', 'danger')
     return render_template('login.html', title='Login', form=form)
+
+@main.route("/logout")
+@login_required  # This ensures only logged-in users can access this route
+def logout():
+    logout_user()  # This comes from flask-login
+    flash('You have been logged out successfully.', 'success')  # Add a success message
+    return redirect(url_for('main.index'))
