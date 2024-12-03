@@ -6,13 +6,17 @@
     <title>AthleteAxis</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/register-login.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/shop.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/product.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet">
 </head>
 <body>
     <nav style="display: flex; justify-content: space-between; padding: 1rem; color: #1470AF;">
         <div style="font-weight: bold; font-size: 1.5rem; ">AthleteAxis</div>
         <div>
-            <a href="/" style="margin: 0 1rem; color: #1470AF; text-decoration: none;">Shop</a>
+            <a href="/" style="margin: 0 1rem; color: #1470AF; text-decoration: none;">Home</a>
+            <a href="/cleanup-products" style="margin: 0 1rem; color: #1470AF; text-decoration: none;">Del</a>
+            <a href="/shop" style="margin: 0 1rem; color: #1470AF; text-decoration: none;">Shop</a>
             <a href="/about" style="margin: 0 1rem; color: #1470AF; text-decoration: none;">About</a>
             <a href="/contact" style="margin: 0 1rem; color: #1470AF; text-decoration: none;">Contact</a>
             <a href="/cart" style="margin: 0 1rem; color: #1470AF; text-decoration: none;">Cart</a>
@@ -26,6 +30,23 @@
             {% endif %}
         </div>
     </nav>
+
+    {% if request.endpoint == 'main.index' %}
+    <div style="display: flex; justify-content: center; margin: 2rem 0;">
+        <a href="/setup-store" style="
+            background-color: black;
+            color: white;
+            text-decoration: none;
+            padding: 1rem 4rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-family: 'Marcellus', serif;
+            transition: background-color 0.3s ease;
+            min-width: 200px;
+            text-align: center;
+        ">Shop all</a>
+    </div>
+{% endif %}
 
     <!-- Content of the page -->
     <div class="container">

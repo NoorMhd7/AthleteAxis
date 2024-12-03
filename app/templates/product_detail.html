@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="product-detail-container">
+    <div class="product-navigation">
+        <a href="{{ url_for('main.shop') }}" class="nav-link">Shop</a>
+        <span class="nav-separator">›</span>
+        <span class="current-product">{{ product.name }}</span>
+    </div>
+    
+    <div class="product-detail-content">
+        <div class="product-image-section">
+            <img src="{{ product.image }}" alt="{{ product.name }}" class="detail-image">
+        </div>
+        
+        <div class="product-info-section">
+            <h1 class="detail-product-name">{{ product.name }}</h1>
+            <p class="detail-product-price">${{ "%.2f"|format(product.price) }}</p>
+            
+            <p class="detail-product-description">{{ product.description }}</p>
+            
+            <div class="product-form">
+                <div class="quantity-selector">
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" id="quantity" name="quantity" value="1" min="1" max="{{ product.quantity }}">
+                </div>
+                
+                <button class="add-to-cart-button">Add To Cart</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -13,3 +13,8 @@ body {
 .navbar a:hover {
     text-decoration: underline;  /* Underline on hover */
 }
+
+.shop-all-button:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+}

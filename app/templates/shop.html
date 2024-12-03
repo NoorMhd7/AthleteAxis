@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="shop-container">
+    <div class="product-grid">
+        {% if products %}
+            {% for product in products %}
+                <div class="product-card">
+                    <a href="{{ url_for('main.product_detail', product_id=product.id) }}" class="product-link">
+                        <div class="product-image-container">
+                            <img src="{{ product.image }}" alt="{{ product.name }}" class="product-image">
+                        </div>
+                        <div class="product-content">
+                            <h3 class="product-name">{{ product.name }}</h3>
+                            <p class="product-price">${{ "%.2f"|format(product.price) }}</p>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-products">No products available</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
