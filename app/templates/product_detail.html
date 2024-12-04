@@ -24,9 +24,33 @@
                     <input type="number" id="quantity" name="quantity" value="1" min="1" max="{{ product.quantity }}">
                 </div>
                 
-                <button class="add-to-cart-button">Add To Cart</button>
+                {% if current_user.is_authenticated %}
+                <form method="POST" action="{{ url_for('main.add_to_cart', product_id=product.id) }}">
+                    <input type="hidden" name="quantity" id="form-quantity" value="1">
+                    <button type="submit" class="add-to-cart-button">Add To Cart</button>
+                </form>
+                {% else %}
+                <div class="login-required" title="Log in to purchase item">
+                    <button type="submit" class="add-to-cart-button" onclick="handleAddToCart(this)">Add To Cart</button>
+
+                    <script>
+                    function handleAddToCart(button) {
+                        button.textContent = 'Item Added';
+                        setTimeout(() => {
+                            button.textContent = 'Add To Cart';
+                        }, 2000);
+                    }
+                    </script>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
 </div>
 {% endblock %}
+
+<script>
+    document.getElementById('quantity').addEventListener('change', function() {
+        document.getElementById('form-quantity').value = this.value;
+    });
+    </script>

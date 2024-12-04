@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/register-login.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/shop.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/product.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cart.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -19,7 +20,9 @@
             <a href="/shop" style="margin: 0 1rem; color: #1470AF; text-decoration: none;">Shop</a>
             <a href="/about" style="margin: 0 1rem; color: #1470AF; text-decoration: none;">About</a>
             <a href="/contact" style="margin: 0 1rem; color: #1470AF; text-decoration: none;">Contact</a>
-            <a href="/cart" style="margin: 0 1rem; color: #1470AF; text-decoration: none;">Cart</a>
+            <a href="/cart" style="margin: 0 1rem; color: #1470AF; text-decoration: none;">
+                Cart {% if cart_count > 0 %}({{ cart_count }}){% endif %}
+            </a>
             
             <!-- Conditionally display login or logout based on whether the user is logged in -->
             {% if current_user.is_authenticated %}

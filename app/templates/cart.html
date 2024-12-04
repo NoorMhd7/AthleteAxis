@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="cart-container">
+    <h1 class="cart-title">Shopping Cart</h1>
+    
+    {% if cart_items %}
+        {% for item in cart_items %}
+        <div class="cart-item" data-item-id="{{ item.id }}">
+            <div class="item-image">
+                <img src="{{ item.product.image }}" alt="{{ item.product.name }}">
+            </div>
+            
+            <div class="item-name">
+                {{ item.product.name }}
+            </div>
+            
+            <div class="quantity-controls">
+                <button class="quantity-btn" onclick="updateQuantity({{ item.id }}, -1)">−</button>
+                <span class="quantity">{{ item.quantity }}</span>
+                <button class="quantity-btn" onclick="updateQuantity({{ item.id }}, 1)">+</button>
+            </div>
+            
+            <div class="item-price">£{{ "%.2f"|format(item.product.price) }}</div>
+            
+            <button class="remove-btn" onclick="removeItem({{ item.id }})">×</button>
+        </div>
+        {% endfor %}
+        
+        <div class="cart-footer">
+            <div class="subtotal">
+                <span>Subtotal</span>
+                <span class="subtotal-amount">£{{ "%.2f"|format(subtotal) }}</span>
+            </div>
+            <button class="checkout-btn">Checkout</button>
+        </div>
+    {% else %}
+        <p class="empty-cart">Your cart is empty</p>
+    {% endif %}
+</div>
+{% endblock content %}
+
+<script>
+async function updateQuantity(itemId, change) {
+    try {
+        const response = await fetch(`/cart/update/${itemId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ change: change })
+        });
+        
+        const data = await response.json();
+        if (response.ok) {
+            // Update the UI
+            if (data.quantity === 0) {
+                document.querySelector(`[data-item-id="${itemId}"]`).remove();
+            } else {
+                const quantityElement = document.querySelector(`[data-item-id="${itemId}"] .cart-item-quantity span`);
+                quantityElement.textContent = data.quantity;
+            }
+            document.querySelector('.subtotal span:last-child').textContent = data.subtotal;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+async function removeItem(itemId) {
+    try {
+        const response = await fetch(`/cart/remove/${itemId}`, {
+            method: 'POST',
+        });
+        
+        const data = await response.json();
+        if (response.ok) {
+            // Remove the item from the UI
+            document.querySelector(`[data-item-id="${itemId}"]`).remove();
+            document.querySelector('.subtotal span:last-child').textContent = data.subtotal;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+</script>

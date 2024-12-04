@@ -28,8 +28,11 @@ def contact():
 
 # Cart Page Route
 @main.route('/cart')
+@login_required
 def cart():
-    return 'Cart Page'
+    cart_items = CartItem.query.filter_by(user_id=current_user.id).all()
+    subtotal = sum(item.quantity * item.product.price for item in cart_items)
+    return render_template('cart.html', cart_items=cart_items, subtotal=subtotal)
 
 
 @main.route("/register", methods=["GET", "POST"])
@@ -99,14 +102,60 @@ def product_detail(product_id):
     product = Product.query.get_or_404(product_id)
     return render_template('product_detail.html', product=product)
 
+@main.route('/cart/update/<int:item_id>', methods=['POST'])
+@login_required
+def update_cart(item_id):
+    cart_item = CartItem.query.get_or_404(item_id)
+    if cart_item.user_id != current_user.id:
+        return jsonify({'error': 'Unauthorized'}), 403
+    
+    quantity_change = int(request.json.get('change', 0))
+    new_quantity = cart_item.quantity + quantity_change
+    
+    if new_quantity <= 0:
+        db.session.delete(cart_item)
+    else:
+        cart_item.quantity = new_quantity
+    
+    db.session.commit()
+    
+    # Calculate new subtotal
+    cart_items = CartItem.query.filter_by(user_id=current_user.id).all()
+    subtotal = sum(item.quantity * item.product.price for item in cart_items)
+    
+    return jsonify({
+        'quantity': new_quantity if new_quantity > 0 else 0,
+        'subtotal': f"${subtotal:.2f}"
+    })
+
+@main.route('/cart/remove/<int:item_id>', methods=['POST'])
+@login_required
+def remove_from_cart(item_id):
+    cart_item = CartItem.query.get_or_404(item_id)
+    if cart_item.user_id != current_user.id:
+        return jsonify({'error': 'Unauthorized'}), 403
+    
+    db.session.delete(cart_item)
+    db.session.commit()
+    
+    # Calculate new subtotal
+    cart_items = CartItem.query.filter_by(user_id=current_user.id).all()
+    subtotal = sum(item.quantity * item.product.price for item in cart_items)
+    
+    return jsonify({
+        'success': True,
+        'subtotal': f"${subtotal:.2f}"
+    })
+
 @main.route('/cart/add/<int:product_id>', methods=['POST'])
 @login_required
 def add_to_cart(product_id):
     product = Product.query.get_or_404(product_id)
     quantity = int(request.form.get('quantity', 1))
     
+    # Check if item already in cart
     cart_item = CartItem.query.filter_by(
-        user_id=current_user.id, 
+        user_id=current_user.id,
         product_id=product_id
     ).first()
     
@@ -120,9 +169,14 @@ def add_to_cart(product_id):
         )
         db.session.add(cart_item)
     
-    db.session.commit()
-    flash('Item added to cart successfully!', 'success')
-    return redirect(url_for('main.shop'))
+    try:
+        db.session.commit()
+        flash('Item added to cart successfully!', 'success')
+    except Exception as e:
+        db.session.rollback()
+        flash('Error adding item to cart.', 'error')
+    
+    return redirect(url_for('main.cart'))
 
 @main.route('/initialize-db')
 def initialize_db():
@@ -195,3 +249,11 @@ def cleanup_products():
     except Exception as e:
         db.session.rollback()
         return f"Error cleaning up products: {str(e)}"
+    
+@main.context_processor
+def inject_cart_count():
+    if current_user.is_authenticated:
+        cart_count = CartItem.query.filter_by(user_id=current_user.id).with_entities(
+            db.func.sum(CartItem.quantity)).scalar() or 0
+        return {'cart_count': int(cart_count)}
+    return {'cart_count': 0}
