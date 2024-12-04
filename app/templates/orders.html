@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="orders-container">
+    <h1 class="order-title">My Orders</h1>
+    
+    {% if orders and orders[0].products %}
+        {% for order in orders %}
+        <div class="order-card">
+            <div class="order-header">
+                <span class="order-number">Order #{{ order.id }}</span>
+                <span class="order-date">{{ order.order_date.strftime('%B %d, %Y') }}</span>
+                <span class="order-status">{{ order.status }}</span>
+            </div>
+            
+            <div class="order-products">
+                {% for product in order.products %}
+                <div class="order-product">
+                    <img src="{{ product.image }}" alt="{{ product.name }}">
+                    <div class="product-details">
+                        <h3>{{ product.name }}</h3>
+                        <p class="product-price">£{{ "%.2f"|format(product.price) }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <div class="order-total">
+                <span>Total: £{{ "%.2f"|format(order.total_amount) }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p class="no-orders">No orders available</p>
+    {% endif %}
+</div>
+{% endblock %}

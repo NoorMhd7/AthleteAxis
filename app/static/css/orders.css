@@ -1,0 +1,90 @@
+.orders-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.order-title {
+    color: #1470AF;
+    font-family: 'Marcellus', serif;
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 2rem;
+}
+
+.order-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    overflow: hidden;
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.order-number {
+    color: #1470AF;
+    font-family: 'Marcellus', serif;
+}
+
+.order-date {
+    color: #666;
+}
+
+.order-status {
+    background: #f8f9fa;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.order-products {
+    padding: 20px;
+}
+
+.order-product {
+    display: flex;
+    gap: 20px;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.order-product img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.product-details h3 {
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.product-price {
+    color: #1470AF;
+    font-weight: 500;
+}
+
+.order-total {
+    text-align: right;
+    padding: 20px;
+    font-size: 1.2rem;
+    color: #1470AF;
+    font-weight: 500;
+}
+
+.no-orders {
+    text-align: center;
+    color: #666;
+    padding: 40px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}

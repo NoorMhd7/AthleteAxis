@@ -13,11 +13,12 @@ product_categories = db.Table('product_categories',
     db.Column('category_id', db.Integer, db.ForeignKey('category.id'), primary_key=True)
 )
 
-# Association table for Order-Product many-to-many relationship
+# Remove primary_key=True from order_id and product_id
 order_products = db.Table('order_products',
-    db.Column('order_id', db.Integer, db.ForeignKey('order.id'), primary_key=True),
-    db.Column('product_id', db.Integer, db.ForeignKey('product.id'), primary_key=True),
-    db.Column('quantity', db.Integer),
+    db.Column('id', db.Integer, primary_key=True),  # Add this new primary key
+    db.Column('order_id', db.Integer, db.ForeignKey('order.id')),
+    db.Column('product_id', db.Integer, db.ForeignKey('product.id')),
+    db.Column('quantity', db.Integer, default=1),
     db.Column('price_at_time', db.Float)
 )
 
@@ -93,12 +94,25 @@ class Order(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     order_date = db.Column(db.DateTime, default=datetime.utcnow)
     total_amount = db.Column(db.Float, nullable=False)
-    status = db.Column(db.String(50), nullable=False, default='pending')
+    status = db.Column(db.String(50), nullable=False, default='PENDING')
     shipping_address = db.Column(db.Text, nullable=False)
     tracking_number = db.Column(db.String(100))
     
-    # Many-to-many relationship with products
     products = db.relationship('Product', secondary=order_products, backref=db.backref('orders', lazy=True))
+
+    def get_products_with_quantities(self):
+        result = db.session.query(
+            Product,
+            order_products.c.quantity,
+            order_products.c.price_at_time
+        ).join(
+            order_products,
+            and_(
+                order_products.c.product_id == Product.id,
+                order_products.c.order_id == self.id
+            )
+        ).all()
+        return result
 
     def __repr__(self):
         return f"Order('{self.id}', Status: '{self.status}')"

@@ -1,12 +1,14 @@
-from flask import Blueprint, render_template, redirect, request, url_for, flash
+from flask import Blueprint, render_template, redirect, request, url_for, flash, jsonify
 from flask_login import login_user, current_user, login_required, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from .models import User
 from .forms import RegistrationForm, LoginForm
-from .models import Product, Category, CartItem
+from .models import Product, Category, CartItem, Order, order_products
 import json
 from pathlib import Path
+from sqlalchemy import and_ 
+from datetime import datetime
 
 main = Blueprint('main', __name__)
 
@@ -34,6 +36,13 @@ def cart():
     subtotal = sum(item.quantity * item.product.price for item in cart_items)
     return render_template('cart.html', cart_items=cart_items, subtotal=subtotal)
 
+@main.route('/orders')
+@login_required
+def orders():
+    user_orders = Order.query.filter_by(user_id=current_user.id)\
+                      .filter(Order.products.any())\
+                      .order_by(Order.order_date.desc()).all()
+    return render_template('orders.html', orders=user_orders)
 
 @main.route("/register", methods=["GET", "POST"])
 def register():
@@ -119,13 +128,14 @@ def update_cart(item_id):
     
     db.session.commit()
     
-    # Calculate new subtotal
     cart_items = CartItem.query.filter_by(user_id=current_user.id).all()
     subtotal = sum(item.quantity * item.product.price for item in cart_items)
+    cart_count = sum(item.quantity for item in cart_items)
     
     return jsonify({
         'quantity': new_quantity if new_quantity > 0 else 0,
-        'subtotal': f"${subtotal:.2f}"
+        'subtotal': f"£{subtotal:.2f}",
+        'cart_count': cart_count
     })
 
 @main.route('/cart/remove/<int:item_id>', methods=['POST'])
@@ -151,6 +161,7 @@ def remove_from_cart(item_id):
 @login_required
 def add_to_cart(product_id):
     product = Product.query.get_or_404(product_id)
+    # Get quantity from form data and convert to integer
     quantity = int(request.form.get('quantity', 1))
     
     # Check if item already in cart
@@ -159,22 +170,25 @@ def add_to_cart(product_id):
         product_id=product_id
     ).first()
     
-    if cart_item:
-        cart_item.quantity += quantity
-    else:
-        cart_item = CartItem(
-            user_id=current_user.id,
-            product_id=product_id,
-            quantity=quantity
-        )
-        db.session.add(cart_item)
-    
     try:
+        if cart_item:
+            # Update existing cart item quantity
+            cart_item.quantity = quantity  # Set to new quantity instead of adding
+        else:
+            # Create new cart item
+            cart_item = CartItem(
+                user_id=current_user.id,
+                product_id=product_id,
+                quantity=quantity  # Use the quantity from the form
+            )
+            db.session.add(cart_item)
+        
         db.session.commit()
-        flash('Item added to cart successfully!', 'success')
+        flash('Cart updated successfully!', 'success')
     except Exception as e:
         db.session.rollback()
-        flash('Error adding item to cart.', 'error')
+        flash('Error updating cart.', 'error')
+        print(f"Error: {e}")
     
     return redirect(url_for('main.cart'))
 
@@ -243,9 +257,14 @@ def setup_store():
 @main.route('/cleanup-products')
 def cleanup_products():
     try:
-        Product.query.delete()
+        # Delete in correct order to avoid foreign key constraints
+        CartItem.query.delete()  # Delete cart items first
+        Order.query.delete()     # Delete orders second
+        Product.query.delete()   # Delete products last
         db.session.commit()
-        return "All products removed. Visit /setup-store to reinitialize the store."
+        
+        # Automatically redirect to setup-store
+        return redirect(url_for('main.setup_store'))
     except Exception as e:
         db.session.rollback()
         return f"Error cleaning up products: {str(e)}"
@@ -257,3 +276,46 @@ def inject_cart_count():
             db.func.sum(CartItem.quantity)).scalar() or 0
         return {'cart_count': int(cart_count)}
     return {'cart_count': 0}
+
+@main.route('/place-order', methods=['POST'])
+@login_required
+def place_order():
+    print("Place order route hit")
+    try:
+        cart_items = CartItem.query.filter_by(user_id=current_user.id).all()
+        if not cart_items:
+            return jsonify({'error': 'Cart is empty'}), 400
+
+        total_amount = sum(item.quantity * item.product.price for item in cart_items)
+
+        # Create order
+        order = Order(
+            user_id=current_user.id,
+            total_amount=total_amount,
+            status='PENDING',
+            shipping_address="Default Address"
+        )
+        db.session.add(order)
+        db.session.flush()  # Get the order ID
+        
+        # Add products to order_products
+        for cart_item in cart_items:
+            db.session.execute(order_products.insert().values(
+                order_id=order.id,
+                product_id=cart_item.product_id,
+                quantity=cart_item.quantity,
+                price_at_time=cart_item.product.price
+            ))
+
+        # Clear cart
+        for item in cart_items:
+            db.session.delete(item)
+
+        db.session.commit()
+        print("Order created successfully")
+        return jsonify({'success': True}), 200
+
+    except Exception as e:
+        db.session.rollback()
+        print(f"Error in place_order: {str(e)}")
+        return jsonify({'error': str(e)}), 500
