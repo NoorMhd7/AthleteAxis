@@ -23,12 +23,12 @@ def index():
 # About Page Route
 @main.route('/about')
 def about():
-    return 'About Page'
+    return 'About'
 
 # Contact Page Route
 @main.route('/contact')
 def contact():
-    return 'Contact Page'
+    return render_template('contact.html')
 
 # Cart Page Route
 @main.route('/cart')

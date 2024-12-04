@@ -27,6 +27,62 @@
             "price": 199.99,
             "quantity": 40,
             "image": "/static/images/img5.jpg"
+        },
+        {
+            "name": "Heavy Duty Dumbbell Set",
+            "description": "Durable dumbbell set with a range of weights for strength training. Ideal for building muscle and enhancing your home gym setup.",
+            "price": 89.99,
+            "quantity": 60,
+            "image": "/static/images/img6.jpg"
+        },
+        {
+            "name": "Adjustable Kettlebell",
+            "description": "Versatile adjustable kettlebell with multiple weight settings. Perfect for dynamic training routines and space-saving in home gyms.",
+            "price": 79.99,
+            "quantity": 80,
+            "image": "/static/images/img7.jpg"
+        },
+        {
+            "name": "Sports Hydration Backpack",
+            "description": "Lightweight hydration backpack with a large water reservoir. Designed for athletes and adventurers to stay hydrated during intense workouts and outdoor activities.",
+            "price": 49.99,
+            "quantity": 120,
+            "image": "/static/images/img8.jpg"
+        },
+        {
+            "name": "High-Performance Jump Rope",
+            "description": "Speed jump rope with adjustable length and ergonomic handles. Ideal for cardio workouts, improving endurance, and enhancing agility.",
+            "price": 19.99,
+            "quantity": 150,
+            "image": "/static/images/img9.jpg"
+        },
+        {
+            "name": "Durable Foam Roller",
+            "description": "Premium foam roller designed for muscle recovery and flexibility. A must-have tool for athletes to relieve muscle tension and improve mobility.",
+            "price": 24.99,
+            "quantity": 90,
+            "image": "/static/images/img10.jpg"
+        },
+        {
+            "name": "Lightweight Hiking Backpack",
+            "description": "Compact and durable hiking backpack with ample storage space and comfortable straps. Perfect for long hikes and outdoor adventures.",
+            "price": 69.99,
+            "quantity": 110,
+            "image": "/static/images/img11.jpg"
+        },
+        {
+            "name": "Breathable Running Shorts",
+            "description": "Lightweight and moisture-wicking running shorts designed for ultimate comfort during long runs. Features breathable fabric and an adjustable waistband.",
+            "price": 29.99,
+            "quantity": 200,
+            "image": "/static/images/img12.jpg"
+        },
+        {
+            "name": "Sports Sunglasses",
+            "description": "Polarized sports sunglasses designed for outdoor athletes. Provides UV protection and clear vision in various light conditions, perfect for cycling and running.",
+            "price": 39.99,
+            "quantity": 100,
+            "image": "/static/images/img13.jpg"
         }
     ]
 }
