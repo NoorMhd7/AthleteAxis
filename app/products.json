@@ -5,28 +5,28 @@
             "description": "Advanced running shoes featuring responsive cushioning and breathable mesh upper. Engineered for serious athletes seeking maximum performance.",
             "price": 159.99,
             "quantity": 50,
-            "image": "/static/images/img1.jpg"
+            "image": "/static/images/img2.jpg"
         },
         {
             "name": "Elite Training Mat",
             "description": "Premium exercise mat crafted with high-density foam. Perfect for yoga, stretching, and intense workout sessions with excellent grip and support.",
             "price": 49.99,
             "quantity": 75,
-            "image": "/static/images/img1.jpg"
+            "image": "/static/images/img3.jpg"
         },
         {
             "name": "Professional Resistance Band Set",
             "description": "Comprehensive resistance band set including multiple resistance levels. Ideal for strength training, rehabilitation, and versatile home workouts.",
             "price": 29.99,
             "quantity": 100,
-            "image": "/static/images/img1.jpg"
+            "image": "/static/images/img4.jpg"
         },
         {
             "name": "Advanced Fitness Tracker",
             "description": "State-of-the-art fitness tracker with heart rate monitoring, sleep analysis, and workout tracking. Water-resistant design for comprehensive activity monitoring.",
             "price": 199.99,
             "quantity": 40,
-            "image": "/static/images/img1.jpg"
+            "image": "/static/images/img5.jpg"
         }
     ]
 }

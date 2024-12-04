@@ -1,8 +1,8 @@
 """Update order_products table structure
 
-Revision ID: e5523d7d447c
+Revision ID: 7bb88430d4cc
 Revises: 
-Create Date: 2024-12-04 19:03:25.485855
+Create Date: 2024-12-04 20:16:36.778980
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'e5523d7d447c'
+revision = '7bb88430d4cc'
 down_revision = None
 branch_labels = None
 depends_on = None

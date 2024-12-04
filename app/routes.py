@@ -9,6 +9,8 @@ import json
 from pathlib import Path
 from sqlalchemy import and_ 
 from datetime import datetime
+from sqlalchemy import delete
+
 
 main = Blueprint('main', __name__)
 
@@ -102,6 +104,7 @@ def shop():
         for product in products:
             print(f"Product: {product.name}, Price: ${product.price}")  # Debug print
         return render_template('shop.html', products=products)
+
     except Exception as e:
         print(f"Error in shop route: {str(e)}")  # Debug print
         return f"Error: {str(e)}"
@@ -259,6 +262,7 @@ def cleanup_products():
     try:
         # Delete in correct order to avoid foreign key constraints
         CartItem.query.delete()  # Delete cart items first
+        db.session.execute(delete(order_products))
         Order.query.delete()     # Delete orders second
         Product.query.delete()   # Delete products last
         db.session.commit()
