@@ -56,7 +56,9 @@ async function removeItem(itemId) {
 }
 
 async function placeOrder(event) {
-    event.preventDefault(); // Prevent form from submitting normally
+    if (event) {
+        event.preventDefault();
+    }
     
     try {
         const response = await fetch('/place-order', {
@@ -67,15 +69,13 @@ async function placeOrder(event) {
         });
         
         if (response.ok) {
-            alert('Order placed successfully!'); // Add feedback
+            // Immediate redirect after successful order
             window.location.href = '/orders';
         } else {
-            const data = await response.json();
-            alert('Error placing order: ' + (data.error || 'Unknown error'));
+            console.error('Error placing order');
         }
     } catch (error) {
         console.error('Error:', error);
-        alert('Error placing order. Please try again.');
     }
 }
 

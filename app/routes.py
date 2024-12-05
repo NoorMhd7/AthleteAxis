@@ -100,13 +100,12 @@ def logout():
 def shop():
     try:
         products = Product.query.all()
-        print(f"Number of products found: {len(products)}")  # Debug print
-        for product in products:
-            print(f"Product: {product.name}, Price: ${product.price}")  # Debug print
+        if not products:  # If no products found
+            return redirect(url_for('main.setup_store'))
+        
         return render_template('shop.html', products=products)
-
     except Exception as e:
-        print(f"Error in shop route: {str(e)}")  # Debug print
+        print(f"Error in shop route: {str(e)}")
         return f"Error: {str(e)}"
 
 @main.route('/product/<int:product_id>')
@@ -284,7 +283,6 @@ def inject_cart_count():
 @main.route('/place-order', methods=['POST'])
 @login_required
 def place_order():
-    print("Place order route hit")
     try:
         cart_items = CartItem.query.filter_by(user_id=current_user.id).all()
         if not cart_items:
@@ -316,10 +314,8 @@ def place_order():
             db.session.delete(item)
 
         db.session.commit()
-        
         return jsonify({'success': True}), 200
 
     except Exception as e:
         db.session.rollback()
-        print(f"Error in place_order: {str(e)}")
         return jsonify({'error': str(e)}), 500
