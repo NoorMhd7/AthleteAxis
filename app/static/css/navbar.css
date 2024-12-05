@@ -1,0 +1,133 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    color: #1470AF;
+    position: relative;
+}
+
+.nav-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.nav-brand a {
+    color: #1470AF;
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.nav-link {
+    color: #1470AF;
+    text-decoration: none;
+    margin: 0 1rem;
+    position: relative;
+    padding-bottom: 2px;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    background-color: black;
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.hamburger,
+.hamburger::before,
+.hamburger::after {
+    display: block;
+    width: 25px;
+    height: 2px;
+    background: #1470AF;
+    position: absolute;
+    transition: all 0.3s ease-in-out;
+}
+
+.hamburger {
+    position: relative;
+}
+
+.hamburger::before {
+    content: '';
+    transform: translateY(-8px);
+}
+
+.hamburger::after {
+    content: '';
+    transform: translateY(8px);
+}
+
+@media (max-width: 768px) {
+    .nav-toggle {
+        display: block;
+        position: relative;
+        z-index: 100;
+    }
+
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: white;
+        padding: 1rem;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        z-index: 99;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-link {
+        padding: 0.5rem 1rem;
+        margin: 0;
+        width: 100%;
+        text-align: center;
+    }
+
+    .nav-link::after {
+        display: none;
+    }
+
+    .nav-link:hover {
+        background-color: #f5f5f5;
+    }
+
+    /* Animation for hamburger menu */
+    .nav-active .hamburger {
+        background: transparent;
+    }
+
+    .nav-active .hamburger::before {
+        transform: rotate(45deg) translate(0, 0);
+    }
+
+    .nav-active .hamburger::after {
+        transform: rotate(-45deg) translate(0, 0);
+    }
+}

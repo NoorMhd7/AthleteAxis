@@ -1,83 +1,44 @@
 {% extends 'base.html' %}
-
 {% block content %}
-<div class="about-container">
-  <h1 class="about-title">Contact Us</h1>
-  <div class="about-content">
-    <p>Ready to team up? Drop us your details and we'll reach out to you soon. We're excited to chat with you!</p>
-    <form class="about-form" id="contact-form">
-      <div class="form-group">
-        <label for="first-name">First Name:</label>
-        <input type="text" id="first-name" name="first-name" required>
-      </div>
-      <div class="form-group">
-        <label for="last-name">Last Name:</label>
-        <input type="text" id="last-name" name="last-name" required>
-      </div>
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
-      </div>
-      <div class="form-group">
-        <label for="message">Message:</label>
-        <textarea id="message" name="message" required></textarea>
-      </div>
-      <button type="submit" class="about-form-btn">Send</button>
-    </form>
-  </div>
-  <div class="about-image">
-    <img src="{{ url_for('static', filename='images/img1.jpg') }}" alt="Soccer Ball">
+<div class="contact-container">
+    <div class="contact-content">
+        <h1>Contact Us</h1>
+        <p>Ready to team up? Drop us your details and we'll reach out to you soon. We're excited to chat with you!</p>
+        
+        <div class="contact-info">
+            <a href="mailto:email@example.com">email@example.com</a>
+            <p>(555) 555-5555</p>
+        </div>
 
-  </div>
+        <form class="contact-form" id="contact-form">
+            <div class="form-label">Name <span class="required">(required)</span></div>
+            <div class="name-fields">
+                <div class="form-group">
+                    <input type="text" id="first-name" name="first-name" required>
+                    <label for="first-name">First Name</label>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="last-name" name="last-name" required>
+                    <label for="last-name">Last Name</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email <span class="required">(required)</span></label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Message <span class="required">(required)</span></label>
+                <textarea id="message" name="message" required></textarea>
+            </div>
+
+            <button type="submit" class="send-button">SEND</button>
+        </form>
+    </div>
+    
+    <div class="contact-image">
+        <img src="{{ url_for('static', filename='images/contact_img.jpg') }}" alt="Soccer Ball">
+    </div>
 </div>
-
-<script>
-  const form = document.getElementById('contact-form');
-  form.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const firstName = document.getElementById('first-name');
-    const lastName = document.getElementById('last-name');
-    const email = document.getElementById('email');
-    const message = document.getElementById('message');
-    const button = document.querySelector('.about-form-btn');
-
-    let isValid = true;
-
-    if (!firstName.value.trim()) {
-      firstName.classList.add('invalid');
-      isValid = false;
-    } else {
-      firstName.classList.remove('invalid');
-    }
-
-    if (!lastName.value.trim()) {
-      lastName.classList.add('invalid');
-      isValid = false;
-    } else {
-      lastName.classList.remove('invalid');
-    }
-
-    if (!email.value.trim()) {
-      email.classList.add('invalid');
-      isValid = false;
-    } else {
-      email.classList.remove('invalid');
-    }
-
-    if (!message.value.trim()) {
-      message.classList.add('invalid');
-      isValid = false;
-    } else {
-      message.classList.remove('invalid');
-    }
-
-    if (isValid) {
-      button.textContent = 'Request Received';
-      form.reset();
-      setTimeout(() => {
-        button.textContent = 'Send';
-      }, 2000);
-    }
-  });
-</script>
 {% endblock %}

@@ -5,41 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AthleteAxis</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/register-login.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/shop.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/product.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/cart.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/orders.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+
+    <script src="{{ url_for('static', filename='js/navbar.js') }}"></script>
     <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet">
 </head>
 <body>
-    <nav style="display: flex; justify-content: space-between; padding: 1rem; color: #1470AF;">
-        <div style="font-weight: bold; font-size: 1.5rem; ">AthleteAxis</div>
-        <div>
-            <a href="/" style="margin: 0 1rem; color: #1470AF; text-decoration: none;">Home</a>
-            <a href="/cleanup-products" style="margin: 0 1rem; color: #1470AF; text-decoration: none;">Del</a>
-            <a href="/shop" style="margin: 0 1rem; color: #1470AF; text-decoration: none;">Shop</a>
-            <a href="/about" style="margin: 0 1rem; color: #1470AF; text-decoration: none;">About</a>
-            <a href="/contact" style="margin: 0 1rem; color: #1470AF; text-decoration: none;">Contact</a>
-            <a href="/cart" style="margin: 0 1rem; color: #1470AF; text-decoration: none;">
-                Cart {% if cart_count > 0 %}({{ cart_count }}){% endif %}
-            </a>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <a href="{{ url_for('main.index') }}" style="color: #1470AF; text-decoration: none;">AthleteAxis</a>
+        </div>
+        
+        <button class="nav-toggle" aria-label="toggle navigation">
+            <span class="hamburger"></span>
+        </button>
+    
+        <div class="nav-links">
+            <a href="/cleanup-products" class="nav-link">Del</a>
+            <a href="/shop" class="nav-link">Shop</a>
+            <a href="/about" class="nav-link">About</a>
+            <a href="/contact" class="nav-link">Contact</a>
             {% if current_user.is_authenticated %}
-                <a href="/orders" style="margin: 0 1rem; color: #1470AF; text-decoration: none;">My Orders</a>
-            {% endif %}
-            
-            <!-- Conditionally display login or logout based on whether the user is logged in -->
-            {% if current_user.is_authenticated %}
-                <a href="/logout" style="margin: 0 1rem; color: #1470AF; text-decoration: none;">Logout</a>
+                <a href="/cart" class="nav-link">
+                    Cart {% if cart_count > 0 %}({{ cart_count }}){% endif %}
+                </a>
+                <a href="/orders" class="nav-link">My Orders</a>
+                <a href="/logout" class="nav-link">Logout</a>
             {% else %}
-                <a href="/login" style="margin: 0 1rem; color: #1470AF; text-decoration: none;">Login/Register</a>
-                <!-- <a href="/register" style="margin: 0 1rem; color: #1470AF; text-decoration: none;">Register</a> -->
+                <a href="#" onclick="showLoginMessage(event)" class="nav-link">Cart</a>
+                <a href="/login" class="nav-link">Login/Register</a>
             {% endif %}
         </div>
     </nav>
 
     {% if request.endpoint == 'main.index' %}
+    <div class="hero-section">
+        <img src="{{ url_for('static', filename='images/home.jpg') }}" alt="Sports Field" class="hero-image">
+        <div class="hero-overlay"></div>
+    </div>
+
     <div style="display: flex; justify-content: center; margin: 2rem 0;">
         <a href="/setup-store" style="
             background-color: black;
@@ -60,5 +71,26 @@
     <div class="container">
         {% block content %}{% endblock %}
     </div>
+
+    <!-- Add this footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <h1 class="footer-title">AthleteAxis</h1>
+            
+            <div class="footer-info">
+                <div class="footer-section">
+                    <h2>LOCATION</h2>
+                    <p>777 Sheriff Road</p>
+                    <p>Leeds, LDS 12345</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h2>CONTACT</h2>
+                    <a href="mailto:email@example.com">email@example.com</a>
+                    <p>(555) 555-5555</p>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>

@@ -33,25 +33,11 @@
                 {% else %}
                 <div class="login-required" title="Log in to purchase item">
                     <button type="submit" class="add-to-cart-button" onclick="handleAddToCart(this)">Add To Cart</button>
-
-                    <script>
-                    function handleAddToCart(button) {
-                        button.textContent = 'Item Added';
-                        setTimeout(() => {
-                            button.textContent = 'Add To Cart';
-                        }, 2000);
-                    }
-                    </script>
                 </div>
                 {% endif %}
             </div>
         </div>
     </div>
 </div>
+<script src="{{ url_for('static', filename='js/product_detail.js') }}"></script>
 {% endblock %}
-
-<script>
-    document.getElementById('quantity').addEventListener('change', function() {
-        document.getElementById('form-quantity').value = this.value;
-    });
-    </script>

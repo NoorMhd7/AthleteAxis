@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from .models import User
 from .forms import RegistrationForm, LoginForm
-from .models import Product, Category, CartItem, Order, order_products
+from .models import Product, CartItem, Order, order_products
 import json
 from pathlib import Path
 from sqlalchemy import and_ 
@@ -23,7 +23,7 @@ def index():
 # About Page Route
 @main.route('/about')
 def about():
-    return 'About'
+    return render_template('about.html')
 
 # Contact Page Route
 @main.route('/contact')
@@ -316,7 +316,7 @@ def place_order():
             db.session.delete(item)
 
         db.session.commit()
-        print("Order created successfully")
+        
         return jsonify({'success': True}), 200
 
     except Exception as e:
