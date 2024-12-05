@@ -113,6 +113,7 @@ def product_detail(product_id):
     product = Product.query.get_or_404(product_id)
     return render_template('product_detail.html', product=product)
 
+# Cart can only be accessed if you log in
 @main.route('/cart/update/<int:item_id>', methods=['POST'])
 @login_required
 def update_cart(item_id):
@@ -139,7 +140,7 @@ def update_cart(item_id):
         'subtotal': f"£{subtotal:.2f}",
         'cart_count': cart_count
     })
-
+# Cart can only be accessed if you log in
 @main.route('/cart/remove/<int:item_id>', methods=['POST'])
 @login_required
 def remove_from_cart(item_id):
@@ -158,7 +159,7 @@ def remove_from_cart(item_id):
         'success': True,
         'subtotal': f"${subtotal:.2f}"
     })
-
+# Cart can only be accessed if you log in
 @main.route('/cart/add/<int:product_id>', methods=['POST'])
 @login_required
 def add_to_cart(product_id):
@@ -255,7 +256,8 @@ def setup_store():
     except Exception as e:
         db.session.rollback()
         return f"Error setting up store: {str(e)}"
-    
+
+# This was used for testing purposes and is now been removed from the website
 @main.route('/cleanup-products')
 def cleanup_products():
     try:
@@ -279,6 +281,7 @@ def inject_cart_count():
             db.func.sum(CartItem.quantity)).scalar() or 0
         return {'cart_count': int(cart_count)}
     return {'cart_count': 0}
+
 
 @main.route('/place-order', methods=['POST'])
 @login_required

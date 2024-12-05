@@ -1,8 +1,8 @@
-"""Update order_products table structure
+"""Add ecommerce models
 
-Revision ID: c6955733fcc5
+Revision ID: 8ef5b847a3a7
 Revises: 
-Create Date: 2024-12-05 00:33:39.487087
+Create Date: 2024-12-05 08:43:28.353473
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'c6955733fcc5'
+revision = '8ef5b847a3a7'
 down_revision = None
 branch_labels = None
 depends_on = None
